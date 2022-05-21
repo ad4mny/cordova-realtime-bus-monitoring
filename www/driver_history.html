@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/custom-bootstrap.css">
+    <link rel="stylesheet" href="css/all.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Rapid Kuantan</title>
+</head>
+
+<body class="bg-light">
+    <!-- Navigation -->
+    <div class="bg-white fixed-bottom d-block d-lg-none d-inline-flex shadow m-3" style="border-radius: 1em;">
+        <div class="p-2 flex-fill">
+            <a class="btn" href="driver_dashboard.html">
+                <i class="fas fa-bus fa-fw fa-lg"></i>
+            </a>
+        </div>
+        <div class="p-2 flex-fill">
+            <a class="btn" href="driver_route.html">
+                <i class="fas fa-route fa-fw fa-lg"></i>
+            </a>
+        </div>
+        <div class="p-2 flex-fill">
+            <a class="btn text-primary" href="driver_history.html">
+                <i class="fas fa-history fa-fw fa-lg"></i>
+            </a>
+        </div>
+        <div class="p-2 flex-fill">
+            <a class="btn" href="#" id="logout-btn">
+                <i class="fas fa-sign-out-alt fa-fw fa-lg text-danger"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Appbar -->
+    <div class="bg-primary py-2 sticky-top">
+        <div class="d-flex justify-content-center align-items-center">
+            <i class="fas fa-bus-alt btn btn-primary fa-lg text-white"></i>
+            <h5 class="fw-bold text-white mb-0">
+                RapidKuantan
+            </h5>
+        </div>
+    </div>
+
+    <!-- Error Info -->
+    <div id="info-container"></div>
+
+    <!-- Content -->
+    <div class="container-fluid py-3">
+        <h1 class="fw-bold">Route History</h1>
+        <hr>
+        <div class="row g-2 row-cols-1" id="route-display"></div>
+    </div>
+
+    <!-- Page Loader -->
+    <div class="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" id="loader">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-body d-flex justify-content-center align-items-center">
+                    <img src="image/load.gif" height="70" width="70">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery-3.6.0.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/app.js"></script>
+    <script src="cordova.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // ajax jquery - get today route 
+            $.ajax({
+                type: 'post',
+                url: url + 'action.php',
+                data: {
+                    action: 'get-all-route',
+                    uid: token.id
+                },
+                dataType: 'json',
+                success: function (result) {
+                    console.log(result);
+                    if (result != 'false' && result != null) {
+                        $('#route-display').append(
+                            '            <div class="col">' +
+                            '                <div class="card shadow-sm mb-2 position-relative" style="border-radius: 25px;">' +
+                            '                    <div class="card-body">' +
+                            '                        <h5 class="card-title mb-0 text-primary">' +
+                            '                            <i class="fas fa-angle-double-right fa-fw"></i> ' +
+                            result['bus_no'] + ': ' + result['route'] +
+                            '                        </h5>' +
+                            '                        <small class="card-text text-secondary">' +
+                            '                            <i class="fas fa-route fa-fw me-1"></i> ' +
+                            result['route_perday'] + ' times route a day  <br>' +
+                            '                            <i class="fas fa-calendar-check fa-fw me-1"></i> ' +
+                            result['date'] +
+                            '                        </small>' +
+                            '                    </div>' +
+                            '                </div>' +
+                            '            </div>'
+                        );
+                    } else {
+                        $('#route-display').append(
+                            '            <div class="col">' +
+                            '                <div class="card shadow-sm mb-2" style="border-radius: 25px;">' +
+                            '                    <div class="card-body">' +
+                            '                        <p class="card-text">No route history available.</p>' +
+                            '                    </div>' +
+                            '                </div>' +
+                            '            </div>'
+                        );
+                    }
+                },
+                error: function (e, s, t) {
+                    console.log(e);
+                    $('#info-container').html(
+                        '<p class="text-danger p-2 bg-light">' +
+                        '<i class="fas fa-exclamation-triangle fa-sm fa-fw"></i>' +
+                        t +
+                        '</p>'
+                    );
+                },
+            })
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/custom-bootstrap.css">
+    <link rel="stylesheet" href="css/all.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Rapid Kuantan</title>
+</head>
+
+<body class="bg-light">
+    <!-- Navigation -->
+    <div class="bg-white fixed-bottom d-block d-lg-none d-inline-flex shadow m-3" style="border-radius: 1em;">
+        <div class="p-2 flex-fill">
+            <a class="btn text-primary" href="driver_dashboard.html">
+                <i class="fas fa-bus fa-fw fa-lg"></i>
+            </a>
+        </div>
+        <div class="p-2 flex-fill">
+            <a class="btn" href="driver_route.html">
+                <i class="fas fa-route fa-fw fa-lg"></i>
+            </a>
+        </div>
+        <div class="p-2 flex-fill">
+            <a class="btn" href="driver_history.html">
+                <i class="fas fa-history fa-fw fa-lg"></i>
+            </a>
+        </div>
+        <div class="p-2 flex-fill">
+            <a class="btn" href="#" id="logout-btn">
+                <i class="fas fa-sign-out-alt fa-fw fa-lg text-danger"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Appbar -->
+    <div class="bg-primary py-2 sticky-top">
+        <div class="d-flex justify-content-center align-items-center">
+            <i class="fas fa-bus-alt btn btn-primary fa-lg text-white"></i>
+            <h5 class="fw-bold text-white mb-0">
+                RapidKuantan
+            </h5>
+        </div>
+    </div>
+
+    <!-- Error Info -->
+    <div id="info-container"></div>
+
+    <!-- Content -->
+    <div class="container-fluid py-3">
+        <div id="bus-display">
+            <h1 class="fw-bold">Your Bus</h1>
+            <hr>
+        </div>
+        <hr>
+        <div id="route-display" style="display: none;">
+            <h1 class="fw-bold">Today's Route</h1>
+            <hr>
+        </div>
+        <div id="route-add" style="display: none;">
+            <h1 class="fw-bold">Add Today's Route</h1>
+            <hr>
+            <form class="row row-cols-2 g-3" action="" method="post" id="route-form">
+                <div class="col-12">
+                    <input type="number" name="route_perday" id="route_perday" class="form-control"
+                        placeholder="Today Total Route" required>
+                </div>
+                <div class="col">
+                    <input type="text" name="current_location" id="current_location" class="form-control"
+                        placeholder="Current Location" required>
+                </div>
+                <div class="col">
+                    <input type="text" name="next_location" id="next_location" class="form-control"
+                        placeholder="Next Location" required>
+                </div>
+                <div class="col-12">
+                    <input type="number" name="arrival_time" id="arrival_time" class="form-control"
+                        placeholder="Estimated Arrival Time To Next Location" required>
+                </div>
+                <div class="col-12">
+                    <select name="status" id="status" class="form-select" required>
+                        <option value="Active">Select bus operating status</option>
+                        <option value="Active">Active</option>
+                        <option value="Unactive">Unactive</option>
+                    </select>
+                </div>
+                <div class="col-12 d-grid">
+                    <input type="hidden" name="action" value="add-route">
+                    <input type="hidden" name="uid" id="route-uid">
+                    <input type="hidden" name="bid" id="route-bid">
+                    <button type="submit" class="btn btn-primary text-white">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Page Loader -->
+    <div class="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" id="loader">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-body d-flex justify-content-center align-items-center">
+                    <img src="image/load.gif" height="70" width="70">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery-3.6.0.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/app.js"></script>
+    <script src="cordova.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // ajax jquery - get bus
+            $.ajax({
+                type: 'post',
+                url: url + 'action.php',
+                data: {
+                    action: 'get-bus-detail',
+                    uid: token.id
+                },
+                dataType: 'json',
+                success: function (result) {
+                    if (result != 'false' && result != null) {
+                        $('#bus-display').append(
+                            '<div class="row">' +
+                            '<div class="col">' +
+                            '<div class="shadow-sm bg-white p-2 rounded-3 d-flex justify-content-between align-items-center">' +
+                            '<div>' +
+                            '<small class="text-muted">Bus ID</small>' +
+                            '<p class="mb-0">' + result['id'] + '</p>' +
+                            '</div>' +
+                            '<div>' +
+                            '<small class="text-muted">Route</small>' +
+                            '<p class="mb-0">' + result['bus_no'] + ': ' + result['route'] +
+                            '</p>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>'
+                        );
+                        $('#route-bid').val(result['id']);
+                    } else {
+                        $('#bus-display').html();
+                    }
+                },
+                error: function (e, s, t) {
+                    console.log(e);
+                    $('#info-container').html(
+                        '<p class="text-danger p-2 bg-light">' +
+                        '<i class="fas fa-exclamation-triangle fa-sm fa-fw"></i>' +
+                        t +
+                        '</p>'
+                    );
+                },
+            })
+            // ajax jquery - get today route 
+            $.ajax({
+                type: 'post',
+                url: url + 'action.php',
+                data: {
+                    action: 'get-today-route',
+                    uid: token.id
+                },
+                dataType: 'json',
+                success: function (result) {
+                    console.log(result);
+                    if (result != 'false' && result != null) {
+                        $('#route-display').append(
+                            '            <div class="row g-3">' +
+                            '            <div class="col">' +
+                            '                <div class="shadow-sm bg-white p-2 rounded-3">' +
+                            '                    <div class="row py-2">' +
+                            '                        <div class="col">' +
+                            '                            <small class="text-muted">Current Location</small>' +
+                            '                            <p class="mb-0">' + result[
+                                'current_location'] + '</p>' +
+                            '                        </div>' +
+                            '                        <div class="col">' +
+                            '                            <small class="text-muted">Next Location</small>' +
+                            '                            <p class="mb-0">' + result[
+                                'next_location'] + '</p>' +
+                            '                        </div>' +
+                            '                    </div>' +
+                            '                    <div class="row py-2">' +
+                            '                        <div class="col">' +
+                            '                            <small class="text-muted">Estimated Arrival Time</small>' +
+                            '                            <p class="mb-0">' + result[
+                                'arrival_time'] + '</p>' +
+                            '                        </div>' +
+                            '                        <div class="col">' +
+                            '                            <small class="text-muted">Bus Status</small>' +
+                            '                            <p class="mb-0">' + result['status'] +
+                            '</p>' +
+                            '                        </div>' +
+                            '                    </div>' +
+                            '                    <div class="row py-2">' +
+                            '                        <div class="col">' +
+                            '                            <small class="text-muted">Total Today Route</small>' +
+                            '                            <p class="mb-0">' + result[
+                                'route_perday'] + '</p>' +
+                            '                        </div>' +
+                            '                    </div>' +
+                            '                    <div class="row py-2">' +
+                            '                        <div class="col">' +
+                            '                            <small class="text-muted">Route Date</small>' +
+                            '                            <p class="mb-0">' + result['date'] +
+                            '</p>' +
+                            '                        </div>' +
+                            '                        <div class="col">' +
+                            '                            <small class="text-muted">Route Created</small>' +
+                            '                            <p class="mb-0">' + result['time'] +
+                            '</p>' +
+                            '                        </div>' +
+                            '                    </div>' +
+                            '                </div>' +
+                            '                        <div class="col d-grid pt-2">' +
+                            '                           <a href="driver_route.html?id=' +
+                            result['id'] + '" class="btn btn-primary text-white">Update</a>' +
+                            '            </div>' +
+                            '                    </div>'
+                        );
+                        $('#route-display').show();
+                    } else {
+                        $('#route-uid').val(token.id);
+                        $('#route-add').show();
+                    }
+                },
+                error: function (e, s, t) {
+                    console.log(e);
+                    $('#info-container').html(
+                        '<p class="text-danger p-2 bg-light">' +
+                        '<i class="fas fa-exclamation-triangle fa-sm fa-fw"></i>' +
+                        t +
+                        '</p>'
+                    );
+                },
+            })
+        });
+    </script>
+</body>
+
+</html>

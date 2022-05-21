@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/custom-bootstrap.css">
+    <link rel="stylesheet" href="css/all.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Rapid Kuantan</title>
+</head>
+
+<body class="bg-light">
+    <!-- Navigation -->
+    <div class="bg-white fixed-bottom d-block d-lg-none d-inline-flex shadow m-3" style="border-radius: 1em;">
+        <div class="p-2 flex-fill">
+            <a class="btn" href="driver_dashboard.html">
+                <i class="fas fa-bus fa-fw fa-lg"></i>
+            </a>
+        </div>
+        <div class="p-2 flex-fill">
+            <a class="btn text-primary" href="driver_route.html">
+                <i class="fas fa-route fa-fw fa-lg"></i>
+            </a>
+        </div>
+        <div class="p-2 flex-fill">
+            <a class="btn" href="driver_history.html">
+                <i class="fas fa-history fa-fw fa-lg"></i>
+            </a>
+        </div>
+        <div class="p-2 flex-fill">
+            <a class="btn" href="#" id="logout-btn">
+                <i class="fas fa-sign-out-alt fa-fw fa-lg text-danger"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Appbar -->
+    <div class="bg-primary py-2 sticky-top">
+        <div class="d-flex justify-content-center align-items-center">
+            <i class="fas fa-bus-alt btn btn-primary fa-lg text-white"></i>
+            <h5 class="fw-bold text-white mb-0">
+                RapidKuantan
+            </h5>
+        </div>
+    </div>
+
+    <!-- Error Info -->
+    <div id="info-container"></div>
+
+    <!-- Content -->
+    <div class="container-fluid py-3">
+        <h1 class="fw-bold">Update Your Route</h1>
+        <hr>
+        <div id="route-display">
+            <form class="row row-cols-2 g-3" action="" method="post" id="route-form">
+                <div class="col-12">
+                    <input type="number" name="route_perday" id="route_perday" class="form-control"
+                        placeholder="Today Total Route" required>
+                </div>
+                <div class="col">
+                    <input type="text" name="current_location" id="current_location" class="form-control"
+                        placeholder="Current Location" required>
+                </div>
+                <div class="col">
+                    <input type="text" name="next_location" id="next_location" class="form-control"
+                        placeholder="Next Location" required>
+                </div>
+                <div class="col-12">
+                    <input type="number" name="arrival_time" id="arrival_time" class="form-control"
+                        placeholder="Estimated Arrival Time To Next Location" required>
+                </div>
+                <div class="col-12">
+                    <select name="status" id="status" class="form-select" required>
+                        <option value="">Select bus operating status</option>
+                        <option value="Active">Active</option>
+                        <option value="Unactive">Unactive</option>
+                    </select>
+                </div>
+                <div class="col-12 d-grid">
+                    <input type="hidden" name="action" value="update-route">
+                    <input type="hidden" name="uid" id="route-uid">
+                    <input type="hidden" name="bid" id="route-bid">
+                    <input type="hidden" name="rid" id="route-rid">
+                    <button type="submit" class="btn btn-primary text-white">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Page Loader -->
+    <div class="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" id="loader">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-body d-flex justify-content-center align-items-center">
+                    <img src="image/load.gif" height="70" width="70">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery-3.6.0.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/app.js"></script>
+    <script src="cordova.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            let param = new URLSearchParams(window.location.search);
+            if (param.has('id') && param.get('id') != '')
+                // ajax jquery - get route detail
+                $.ajax({
+                    type: 'post',
+                    url: url + 'action.php',
+                    data: {
+                        action: 'get-route-detail',
+                        rid: param.get('id')
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result != 'false' && result != null) {
+                            $('#route_perday').val(result['route_perday']);
+                            $('#current_location').val(result['current_location']);
+                            $('#next_location').val(result['next_location']);
+                            $('#arrival_time').val(result['arrival_time']);
+                            $('#status').val(result['status']);
+                            $('#route-uid').val(result['user_id']);
+                            $('#route-bid').val(result['bus_id']);
+                            $('#route-rid').val(result['id']);
+                        } else
+                            $('#route-display').append('Error!');
+                    },
+                    error: function (e, s, t) {
+                        console.log(e);
+                        $('#info-container').html(
+                            '<p class="text-danger p-2 bg-light">' +
+                            '<i class="fas fa-exclamation-triangle fa-sm fa-fw"></i>' +
+                            t +
+                            '</p>'
+                        );
+                    },
+                })
+            else
+                location.replace('driver_dashboard.html');
+        });
+    </script>
+</body>
+
+</html>

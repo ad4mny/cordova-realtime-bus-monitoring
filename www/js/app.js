@@ -356,6 +356,44 @@ $(document).ready(function () {
         })
     })
 
+    // ajax jquery - create route
+    $('#route-form').on('submit', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: 'post',
+            url: url + 'action.php',
+            data: new FormData(this),
+            dataType: 'json',
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function () {
+                loader.show();
+            },
+            success: function (result) {
+                console.log(result);
+                if (result != 'false') {
+                    alert('Adding route success.');
+                    location.reload();
+                } else
+                    alert('Failed to route, please try again.');
+            },
+            error: function (e, s, t) {
+                console.log(e);
+                $('#info-container').html(
+                    '<p class="text-danger p-2 bg-light">' +
+                    '<i class="fas fa-exclamation-triangle fa-sm fa-fw"></i>' +
+                    t +
+                    '</p>'
+                );
+            },
+            complete: function () {
+                loader.hide();
+            }
+        });
+    })
+
     // ============++++++++++==========+++++++++=========+++++++++==
     // swap display on profile view and update button
     $('#update-btn').on('click', function () {
