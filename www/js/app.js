@@ -3,7 +3,8 @@ let url = 'http://localhost/rapidkuantan-web/';
 let loader = new bootstrap.Modal(document.getElementById('loader'));
 let errors = {
     'email': 0,
-    'password': 0
+    'password': 0,
+    'bus': 0
 };
 
 $(document).ready(function () {
@@ -153,10 +154,10 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (result) {
                 if (result != 'false') {
-                    $('#email').addClass("border border-danger");
+                    $('#email').addClass("border border-danger border-1");
                     errors.email = 1;
                 } else {
-                    $('#email').removeClass("border border-danger");
+                    $('#email').removeClass("border border-danger border-1");
                     errors.email = 0;
                 }
             },
@@ -181,6 +182,178 @@ $(document).ready(function () {
             $('#confirmpassword').removeClass("border border-danger border-1");
             errors.password = 0;
         }
+    })
+
+    // ajax jquery - create driver
+    $('#driver-form').on('submit', function (e) {
+        e.preventDefault();
+
+        if (
+            errors.email != 1
+        )
+            $.ajax({
+                type: 'post',
+                url: url + 'action.php',
+                data: new FormData(this),
+                dataType: 'json',
+                contentType: false,
+                cache: false,
+                processData: false,
+                beforeSend: function () {
+                    loader.show();
+                },
+                success: function (result) {
+                    if (result != 'false') {
+                        alert('Adding driver account success.');
+                        location.reload();
+                    } else
+                        alert('Failed to add driver account, please try again.');
+                },
+                error: function (e, s, t) {
+                    console.log(e);
+                    $('#info-container').html(
+                        '<p class="text-danger p-2 bg-light">' +
+                        '<i class="fas fa-exclamation-triangle fa-sm fa-fw"></i>' +
+                        t +
+                        '</p>'
+                    );
+                },
+                complete: function () {
+                    loader.hide();
+                }
+            });
+        else
+            alert('Error adding driver account! Email address already existed, please try again with another email.');
+    })
+
+    // ajax jquery - create bus
+    $('#bus-form').on('submit', function (e) {
+        e.preventDefault();
+
+        if (
+            errors.bus != 1
+        )
+            $.ajax({
+                type: 'post',
+                url: url + 'action.php',
+                data: new FormData(this),
+                dataType: 'json',
+                contentType: false,
+                cache: false,
+                processData: false,
+                beforeSend: function () {
+                    loader.show();
+                },
+                success: function (result) {
+                    if (result != 'false') {
+                        alert('Adding bus success.');
+                        location.reload();
+                    } else
+                        alert('Failed to add bus, please try again.');
+                },
+                error: function (e, s, t) {
+                    console.log(e);
+                    $('#info-container').html(
+                        '<p class="text-danger p-2 bg-light">' +
+                        '<i class="fas fa-exclamation-triangle fa-sm fa-fw"></i>' +
+                        t +
+                        '</p>'
+                    );
+                },
+                complete: function () {
+                    loader.hide();
+                }
+            });
+        else
+            alert('Error adding bus! Bus already existed, choose another route.');
+
+    })
+
+    // ajax jquery - check existing bus 
+    $('#bus').on('keyup', function () {
+        $.ajax({
+            type: 'post',
+            url: url + 'action.php',
+            data: {
+                action: 'check-bus',
+                bus: this.value
+            },
+            dataType: 'json',
+            success: function (result) {
+                if (result != 'false') {
+                    $('#bus').addClass("border border-danger");
+                    errors.bus = 1;
+                } else {
+                    $('#bus').removeClass("border border-danger");
+                    errors.bus = 0;
+                }
+            },
+            error: function (e, s, t) {
+                console.log(e);
+                $('#info-container').html(
+                    '<p class="text-danger p-2 bg-light">' +
+                    '<i class="fas fa-exclamation-triangle fa-sm fa-fw"></i>' +
+                    t +
+                    '</p>'
+                );
+            },
+        })
+    })
+
+    // ajax jquery - delete bus 
+    $('body').on('click', '.delete-bus-btn', function () {
+        $.ajax({
+            type: 'post',
+            url: url + 'action.php',
+            data: {
+                action: 'delete-bus',
+                busid: this.value
+            },
+            dataType: 'json',
+            success: function (result) {
+                if (result != 'false')
+                    location.reload();
+                else
+                    alert('Error while deleting bus.');
+            },
+            error: function (e, s, t) {
+                console.log(e);
+                $('#info-container').html(
+                    '<p class="text-danger p-2 bg-light">' +
+                    '<i class="fas fa-exclamation-triangle fa-sm fa-fw"></i>' +
+                    t +
+                    '</p>'
+                );
+            },
+        })
+    })
+
+    // ajax jquery - delete driver 
+    $('body').on('click', '.delete-driver-btn', function () {
+        $.ajax({
+            type: 'post',
+            url: url + 'action.php',
+            data: {
+                action: 'delete-driver',
+                driverid: this.value
+            },
+            dataType: 'json',
+            success: function (result) {
+                if (result != 'false')
+                    location.reload();
+                else
+                    alert('Error while deleting driver.');
+            },
+            error: function (e, s, t) {
+                console.log(e);
+                $('#info-container').html(
+                    '<p class="text-danger p-2 bg-light">' +
+                    '<i class="fas fa-exclamation-triangle fa-sm fa-fw"></i>' +
+                    t +
+                    '</p>'
+                );
+            },
+        })
     })
 
     // ============++++++++++==========+++++++++=========+++++++++==

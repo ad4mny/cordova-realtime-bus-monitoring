@@ -37,12 +37,14 @@
             $('.container-fluid').fadeIn(500);
             setTimeout(function () {
                 var token = JSON.parse(localStorage.getItem('token'));
-                if (token != null)
-                    if (token.ic_number == 'staff@rapid')
+                if (token != null) {
+                    if (token.role == '3')
+                        location.replace('admin_dashboard.html');
+                    else if (token.role == '2')
                         location.replace('driver_dashboard.html');
                     else
                         location.replace('home.html');
-                else
+                } else
                     location.replace('login.html');
             }, 500);
         });
