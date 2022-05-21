@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/custom-bootstrap.css">
+    <link rel="stylesheet" href="css/all.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Rapid Kuantan</title>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <div class="bg-white fixed-bottom d-block d-lg-none d-inline-flex shadow m-3" style="border-radius: 1em;">
+        <div class="p-2 flex-fill">
+            <a class="btn" href="home.html">
+                <i class="fas fa-home fa-fw fa-lg"></i>
+            </a>
+        </div>
+        <div class="p-2 flex-fill">
+            <a class="btn text-primary" href="bus.html">
+                <i class="fas fa-bus fa-fw fa-lg"></i>
+            </a>
+        </div>
+        <div class="p-2 flex-fill">
+            <a class="btn" href="alert.html">
+                <i class="fas fa-exclamation-circle fa-fw fa-lg"></i>
+            </a>
+        </div>
+        <div class="p-2 flex-fill">
+            <a class="btn" href="profile.html">
+                <i class="fas fa-user-circle fa-fw fa-lg"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Appbar -->
+    <div class="bg-primary py-2 sticky-top">
+        <div class="d-flex justify-content-center align-items-center">
+            <i class="fas fa-bus-alt btn btn-primary fa-lg text-white"></i>
+            <h5 class="fw-bold text-white mb-0">
+                RapidKuantan
+            </h5>
+        </div>
+    </div>
+
+    <!-- Error Info -->
+    <div id="info-container"></div>
+
+    <!-- Content -->
+    <div class="container-fluid py-4">
+
+    </div>
+
+    <!-- Page Loader -->
+    <div class="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" id="loader">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-body d-flex justify-content-center align-items-center">
+                    <img src="image/load.gif" height="70" width="70">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery-3.6.0.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/app.js"></script>
+    <script src="cordova.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#profile-email').html(token.email);
+        });
+    </script>
+</body>
+
+</html>
