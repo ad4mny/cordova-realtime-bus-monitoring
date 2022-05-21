@@ -12,12 +12,12 @@
     <title>Rapid Kuantan</title>
 </head>
 
-<body>
+<body class="bg-light">
     <!-- Navigation -->
     <div class="bg-white fixed-bottom d-block d-lg-none d-inline-flex shadow m-3" style="border-radius: 1em;">
         <div class="p-2 flex-fill">
             <a class="btn" href="home.html">
-                <i class="fas fa-home fa-fw fa-lg"></i>
+                <i class="fas fa-columns fa-fw fa-lg"></i>
             </a>
         </div>
         <div class="p-2 flex-fill">
@@ -26,8 +26,8 @@
             </a>
         </div>
         <div class="p-2 flex-fill">
-            <a class="btn text-primary" href="alert.html">
-                <i class="fas fa-exclamation-circle fa-fw fa-lg"></i>
+            <a class="btn text-primary" href="route.html">
+                <i class="fas fa-route fa-fw fa-lg"></i>
             </a>
         </div>
         <div class="p-2 flex-fill">
@@ -51,8 +51,43 @@
     <div id="info-container"></div>
 
     <!-- Content -->
-    <div class="container-fluid py-4">
-
+    <div class="container-fluid py-3">
+        <h1 class="fw-bold">Routes</h1>
+        <hr>
+        <div class="row mb-2 g-2">
+            <div class="col">
+                <select name="route" id="route" class="form-select">
+                    <option value="0" selected>Select bus no.</option>
+                    <option value="100">100</option>
+                    <option value="101">101</option>
+                    <option value="102">102</option>
+                    <option value="200">200</option>
+                    <option value="300">300</option>
+                    <option value="301">301</option>
+                    <option value="302">302</option>
+                    <option value="303">303</option>
+                    <option value="400">400</option>
+                    <option value="401">401</option>
+                    <option value="500">500</option>
+                    <option value="600">600</option>
+                    <option value="601">601</option>
+                    <option value="603">603</option>
+                </select>
+            </div>
+        </div>
+        <hr>
+        <div class="row g-2 row-cols-1" id="bus-display">
+            <div class="col">
+                <p class="card-text">100: Bandar - Gambang</p>
+            </div>
+            <div class="col">
+                <div class="card shadow-sm mb-2" style="border-radius: 25px;">
+                    <div class="card-body">
+                        <p class="card-text">No busses available.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Page Loader -->

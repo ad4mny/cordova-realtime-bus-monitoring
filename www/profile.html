@@ -12,12 +12,12 @@
     <title>Rapid Kuantan</title>
 </head>
 
-<body>
+<body class="bg-light">
     <!-- Navigation -->
     <div class="bg-white fixed-bottom d-block d-lg-none d-inline-flex shadow m-3" style="border-radius: 1em;">
         <div class="p-2 flex-fill">
             <a class="btn" href="home.html">
-                <i class="fas fa-home fa-fw fa-lg"></i>
+                <i class="fas fa-columns fa-fw fa-lg"></i>
             </a>
         </div>
         <div class="p-2 flex-fill">
@@ -26,8 +26,8 @@
             </a>
         </div>
         <div class="p-2 flex-fill">
-            <a class="btn" href="alert.html">
-                <i class="fas fa-exclamation-circle fa-fw fa-lg"></i>
+            <a class="btn" href="route.html">
+                <i class="fas fa-route fa-fw fa-lg"></i>
             </a>
         </div>
         <div class="p-2 flex-fill">
@@ -51,8 +51,10 @@
     <div id="info-container"></div>
 
     <!-- Content -->
-    <div class="container-fluid py-4">
-        <div class="container-fluid" id="profile-view">
+    <div class="container-fluid py-3">
+        <h1 class="fw-bold">Profile</h1>
+        <hr>
+        <div id="profile-view">
             <div class="row row-cols-1 g-1">
                 <div class="col">
                     <small class="text-muted">Your email address</small>
@@ -61,13 +63,16 @@
                 <div class="col d-grid">
                     <button type="button" class="btn btn-secondary text-white" id="update-btn">Update Account</button>
                 </div>
+                <div class="col d-grid">
+                    <a class="btn btn-danger text-white" href="#" id="logout-btn">Logout</a>
+                </div>
             </div>
         </div>
-        <div class="container-fluid" style="display: none;" id="profile-update">
+        <div style="display: none;" id="profile-update">
             <form class="row row-cols-1 g-3" action="" method="post" id="profile-form">
                 <div class="col">
                     <small class="text-muted">Your email address</small>
-                    <input type="email" name="email" id="email" class="form-control bg-light" placeholder="Email">
+                    <input type="email" name="email" id="email" class="form-control " placeholder="Email">
                 </div>
                 <div class="col d-grid">
                     <input type="hidden" name="action" value="update">
@@ -83,16 +88,15 @@
                 </div>
             </form>
         </div>
-        <div class="container-fluid" style="display: none;" id="password-update">
+        <div style="display: none;" id="password-update">
             <form class="row row-cols-1 g-3" action="" method="post" id="password-form">
                 <div class="col">
                     <small class="text-muted">Your new password</small>
-                    <input type="text" name="password" id="password" class="form-control bg-light"
-                        placeholder="New Password">
+                    <input type="text" name="password" id="password" class="form-control " placeholder="New Password">
                 </div>
                 <div class="col">
                     <small class="text-muted">Confirm new password</small>
-                    <input type="text" name="confirmpassword" id="confirmpassword" class="form-control bg-light"
+                    <input type="text" name="confirmpassword" id="confirmpassword" class="form-control "
                         placeholder="Confirm New Password">
                 </div>
                 <div class="col d-grid">

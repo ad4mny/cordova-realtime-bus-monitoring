@@ -12,12 +12,12 @@
     <title>Rapid Kuantan</title>
 </head>
 
-<body>
+<body class="bg-light">
     <!-- Navigation -->
     <div class="bg-white fixed-bottom d-block d-lg-none d-inline-flex shadow m-3" style="border-radius: 1em;">
         <div class="p-2 flex-fill">
             <a class="btn" href="home.html">
-                <i class="fas fa-home fa-fw fa-lg"></i>
+                <i class="fas fa-columns fa-fw fa-lg"></i>
             </a>
         </div>
         <div class="p-2 flex-fill">
@@ -26,8 +26,8 @@
             </a>
         </div>
         <div class="p-2 flex-fill">
-            <a class="btn" href="alert.html">
-                <i class="fas fa-exclamation-circle fa-fw fa-lg"></i>
+            <a class="btn" href="route.html">
+                <i class="fas fa-route fa-fw fa-lg"></i>
             </a>
         </div>
         <div class="p-2 flex-fill">
@@ -51,8 +51,45 @@
     <div id="info-container"></div>
 
     <!-- Content -->
-    <div class="container-fluid py-4">
-
+    <div class="container-fluid py-3">
+        <h1 class="fw-bold">Busses</h1>
+        <hr>
+        <div class="row mb-2">
+            <div class="col">
+                <input type="text" class="form-control" name="search" id="search" placeholder="Search bus..">
+            </div>
+        </div>
+        <hr>
+        <div class="row g-2 row-cols-1" id="bus-display">
+            <div class="col">
+                <div class="card shadow-sm mb-2 position-relative" style="border-radius: 25px;">
+                    <div class="card-body">
+                        <h5 class="card-title mb-0 text-primary">
+                            <i class="fas fa-angle-double-right fa-fw"></i> 100: Bandar - Gambang
+                        </h5>
+                        <small class="card-text text-secondary">
+                            <i class="fas fa-stopwatch fa-fw me-1"></i> Arrival 10 mins <br>
+                            <i class="fas fa-route fa-fw me-1"></i> 2 times route a day  <br>
+                            <i class="fas fa-map-marker-alt fa-fw me-1"></i> Currently at Pasir Puteh to MPK
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card shadow-sm mb-2 position-relative" style="border-radius: 25px;">
+                    <div class="card-body">
+                        <h5 class="card-title mb-0 text-primary">
+                            <i class="fas fa-angle-double-right fa-fw"></i> 100: Bandar - Gambang
+                        </h5>
+                        <small class="card-text text-secondary">
+                            <i class="fas fa-stopwatch fa-fw me-1"></i> Arrival 10 mins <br>
+                            <i class="fas fa-route fa-fw me-1"></i> 2 times route a day  <br>
+                            <i class="fas fa-map-marker-alt fa-fw me-1"></i> Currently at Pasir Puteh to MPK
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Page Loader -->
