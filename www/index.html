@@ -1,51 +1,55 @@
 <!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
+<html lang="en">
 
-    http://www.apache.org/licenses/LICENSE-2.0
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RapidKuantan</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/custom-bootstrap.css">
+    <link rel="stylesheet" href="css/all.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
 
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
-<html>
-    <head>
-        <meta charset="utf-8">
-        <!--
-        Customize this policy to fit your own app's needs. For more guidance, see:
-            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
-        Some notes:
-            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
-            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
-            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
-                * Enable inline JS: add 'unsafe-inline' to default-src
-        -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
-        <meta name="color-scheme" content="light dark">
-        <link rel="stylesheet" href="css/index.css">
-        <title>Hello World</title>
-    </head>
-    <body>
-        <div class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
+<body>
+    <div class="container-fluid p-3 d-flex justify-content-center align-items-center"
+        style="min-height: 100vh; display: none;">
+        <div class="row row-cols-1 g-3">
+            <div class="col d-flex align-items-center">
+                <div class="me-2">
+                    <i class="fas fa-bus-alt btn btn-primary fa-2x p-2 text-white"></i>
+                </div>
+                <div>
+                    <h1 class="text-primary mb-0 fw-bold">
+                        RapidKuantan
+                    </h1>
+                    <p class="text-muted mb-0 fw-light">
+                        Riding bus never been easier!
+                    </p>
+                </div>
             </div>
         </div>
-        <script src="cordova.js"></script>
-        <script src="js/index.js"></script>
-    </body>
+    </div>
+    <script type="text/javascript">
+        // check for user login localStorage
+        window.addEventListener('load', (event) => {
+            $('.container-fluid').fadeIn(500);
+            setTimeout(function () {
+                var token = JSON.parse(localStorage.getItem('token'));
+                if (token != null)
+                    if (token.ic_number == 'staff@rapid')
+                        location.replace('driver_dashboard.html');
+                    else
+                        location.replace('home.html');
+                else
+                    location.replace('login.html');
+            }, 500);
+        });
+    </script>
+    <script src="js/jquery-3.6.0.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script src="cordova.js"></script>
+</body>
+
 </html>
