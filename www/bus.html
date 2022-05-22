@@ -51,7 +51,7 @@
     <div id="info-container"></div>
 
     <!-- Content -->
-    <div class="container-fluid py-3">
+     <div class="container-fluid py-3" style="margin-bottom: 70px;" >
         <h1 class="fw-bold">Busses</h1>
         <hr>
         <div class="row mb-2">
@@ -61,34 +61,7 @@
         </div>
         <hr>
         <div class="row g-2 row-cols-1" id="bus-display">
-            <div class="col">
-                <div class="card shadow-sm mb-2 position-relative" style="border-radius: 25px;">
-                    <div class="card-body">
-                        <h5 class="card-title mb-0 text-primary">
-                            <i class="fas fa-angle-double-right fa-fw"></i> 100: Bandar - Gambang
-                        </h5>
-                        <small class="card-text text-secondary">
-                            <i class="fas fa-stopwatch fa-fw me-1"></i> Arrival 10 mins <br>
-                            <i class="fas fa-route fa-fw me-1"></i> 2 times route a day  <br>
-                            <i class="fas fa-map-marker-alt fa-fw me-1"></i> Currently at Pasir Puteh to MPK
-                        </small>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card shadow-sm mb-2 position-relative" style="border-radius: 25px;">
-                    <div class="card-body">
-                        <h5 class="card-title mb-0 text-primary">
-                            <i class="fas fa-angle-double-right fa-fw"></i> 100: Bandar - Gambang
-                        </h5>
-                        <small class="card-text text-secondary">
-                            <i class="fas fa-stopwatch fa-fw me-1"></i> Arrival 10 mins <br>
-                            <i class="fas fa-route fa-fw me-1"></i> 2 times route a day  <br>
-                            <i class="fas fa-map-marker-alt fa-fw me-1"></i> Currently at Pasir Puteh to MPK
-                        </small>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 
@@ -110,7 +83,60 @@
 
     <script>
         $(document).ready(function () {
-            $('#profile-email').html(token.email);
+            // ajax jquery - get all route 
+            $.ajax({
+                type: 'post',
+                url: url + 'action.php',
+                data: {
+                    action: 'get-route'
+                },
+                dataType: 'json',
+                success: function (result) {
+                    console.log(result);
+                    if (result != 'false' && result != null) {
+                        for (var i = 0; i < result.length; i++)
+                            $('#bus-display').append(
+                                '            <div class="col">' +
+                                '                <div class="card shadow-sm mb-2 position-relative" style="border-radius: 25px;">' +
+                                '                    <div class="card-body">' +
+                                '                        <h5 class="card-title mb-0 text-primary">' +
+                                '                            <i class="fas fa-angle-double-right fa-fw"></i> ' +
+                                result[i][1] + ': ' + result[i][12] +
+                                '                        </h5>' +
+                                '                        <small class="card-text text-secondary">' +
+                                '                            <i class="fas fa-stopwatch fa-fw me-1"></i> Arrival ' +
+                                result[i][3] + ' mins  <br>' +
+                                '                            <i class="fas fa-route fa-fw me-1"></i> ' +
+                                result[i][6] + ' times route a day  <br>' +
+                                '                            <i class="fas fa-map-marker-alt fa-fw me-1"></i> Currently at ' +
+                                result[i][4] + ' to ' + result[i][5] +
+                                '                        </small>' +
+                                '                    </div>' +
+                                '                </div>' +
+                                '            </div>'
+                            );
+                    } else {
+                        $('#route-display').append(
+                            '            <div class="col">' +
+                            '                <div class="card shadow-sm mb-2" style="border-radius: 25px;">' +
+                            '                    <div class="card-body">' +
+                            '                        <p class="card-text">No bus available today.</p>' +
+                            '                    </div>' +
+                            '                </div>' +
+                            '            </div>'
+                        );
+                    }
+                },
+                error: function (e, s, t) {
+                    console.log(e);
+                    $('#info-container').html(
+                        '<p class="text-danger p-2 bg-light">' +
+                        '<i class="fas fa-exclamation-triangle fa-sm fa-fw"></i>' +
+                        t +
+                        '</p>'
+                    );
+                },
+            })
         });
     </script>
 </body>

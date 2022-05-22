@@ -51,43 +51,18 @@
     <div id="info-container"></div>
 
     <!-- Content -->
-    <div class="container-fluid py-3">
+     <div class="container-fluid py-3" style="margin-bottom: 70px;" >
         <h1 class="fw-bold">Routes</h1>
         <hr>
         <div class="row mb-2 g-2">
             <div class="col">
-                <select name="route" id="route" class="form-select">
+                <select name="bus" id="bus-route" class="form-select">
                     <option value="0" selected>Select bus no.</option>
-                    <option value="100">100</option>
-                    <option value="101">101</option>
-                    <option value="102">102</option>
-                    <option value="200">200</option>
-                    <option value="300">300</option>
-                    <option value="301">301</option>
-                    <option value="302">302</option>
-                    <option value="303">303</option>
-                    <option value="400">400</option>
-                    <option value="401">401</option>
-                    <option value="500">500</option>
-                    <option value="600">600</option>
-                    <option value="601">601</option>
-                    <option value="603">603</option>
                 </select>
             </div>
         </div>
         <hr>
-        <div class="row g-2 row-cols-1" id="bus-display">
-            <div class="col">
-                <p class="card-text">100: Bandar - Gambang</p>
-            </div>
-            <div class="col">
-                <div class="card shadow-sm mb-2" style="border-radius: 25px;">
-                    <div class="card-body">
-                        <p class="card-text">No busses available.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="row g-2 row-cols-1" id="bus-display"></div>
     </div>
 
     <!-- Page Loader -->
@@ -108,7 +83,41 @@
 
     <script>
         $(document).ready(function () {
-            $('#profile-email').html(token.email);
+            // ajax jquery - get bus 
+            $.ajax({
+                type: 'post',
+                url: url + 'action.php',
+                data: {
+                    action: 'get-bus'
+                },
+                dataType: 'json',
+                success: function (result) {
+                    if (result != 'false' && result.length > 0) {
+                        for (var i = 0; i < result.length; i++) {
+                            $('#bus-route').append(
+                                '<option value="' + result[i][0] + '">' + result[i][1] + ': ' +
+                                result[i][2] +
+                                '</option>'
+                            );
+                        }
+                    } else {
+                        $('#bus-display').html(
+                            '            <div class="col shadow-sm bg-white p-2 rounded-3">' +
+                            '               <p class="card-text">No bus available.</p>' +
+                            '            </div>'
+                        );
+                    }
+                },
+                error: function (e, s, t) {
+                    console.log(e);
+                    $('#info-container').html(
+                        '<p class="text-danger p-2 bg-light">' +
+                        '<i class="fas fa-exclamation-triangle fa-sm fa-fw"></i>' +
+                        t +
+                        '</p>'
+                    );
+                },
+            })
         });
     </script>
 </body>
