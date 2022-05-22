@@ -394,6 +394,79 @@ $(document).ready(function () {
         });
     })
 
+    // ajax jquery - create route
+    $('#bus-route').on('change', function (e) {
+        $.ajax({
+            type: 'post',
+            url: url + 'action.php',
+            data: {
+                action: 'get-bus-route',
+                busid: this.value
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                loader.show();
+            },
+            success: function (result) {
+                console.log(result);
+                if (result != 'false' && result.length > 0) {
+                    $('#bus-display').html('');
+                    $('#bus-display').append(
+                        '<div class="col">' +
+                        '<p class="card-text">' +
+                        result[0][11] + ': ' + result[0][12] + '</p>' +
+                        '</div>'
+                    );
+
+                    for (var i = 0; i < result.length; i++)
+                        $('#bus-display').append(
+                            '            <div class="col">' +
+                            '                <div class="card shadow-sm mb-2 position-relative" style="border-radius: 25px;">' +
+                            '                    <div class="card-body">' +
+                            '                        <h5 class="card-title mb-0 text-primary">' +
+                            '                            <i class="fas fa-angle-double-right fa-fw"></i> ' +
+                            result[i][11] + ': ' + result[i][12] +
+                            '                        </h5>' +
+                            '                        <small class="card-text text-secondary">' +
+                            '                            <i class="fas fa-stopwatch fa-fw me-1"></i> Arrival ' +
+                            result[i][3] + ' mins  <br>' +
+                            '                            <i class="fas fa-route fa-fw me-1"></i> ' +
+                            result[i][6] + ' times route a day  <br>' +
+                            '                            <i class="fas fa-map-marker-alt fa-fw me-1"></i> Currently at ' +
+                            result[i][4] + ' to ' + result[i][5] +
+                            '                        </small>' +
+                            '                    </div>' +
+                            '                </div>' +
+                            '            </div>'
+                        );
+                } else {
+                    $('#bus-display').html('');
+                    $('#bus-display').append(
+                        '            <div class="col">' +
+                        '                <div class="card shadow-sm mb-2" style="border-radius: 25px;">' +
+                        '                    <div class="card-body">' +
+                        '                        <p class="card-text">No bus available today.</p>' +
+                        '                    </div>' +
+                        '                </div>' +
+                        '            </div>'
+                    );
+                }
+            },
+            error: function (e, s, t) {
+                console.log(e);
+                $('#info-container').html(
+                    '<p class="text-danger p-2 bg-light">' +
+                    '<i class="fas fa-exclamation-triangle fa-sm fa-fw"></i>' +
+                    t +
+                    '</p>'
+                );
+            },
+            complete: function () {
+                loader.hide();
+            }
+        });
+    })
+
     // ============++++++++++==========+++++++++=========+++++++++==
     // swap display on profile view and update button
     $('#update-btn').on('click', function () {
