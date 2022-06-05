@@ -1,5 +1,5 @@
 let token = JSON.parse(localStorage.getItem('token'));
-let url = 'http://localhost/rapidkuantan-web/';
+let url = 'Add your own rest api url here. checkout restapi folder for code.';
 let loader = new bootstrap.Modal(document.getElementById('loader'));
 let errors = {
     'email': 0,
